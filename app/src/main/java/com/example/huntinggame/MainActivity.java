@@ -2,12 +2,8 @@ package com.example.huntinggame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,9 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Button rightBTN;
     Button upBTN;
     Button downBTN;
-    TextView txt;
+    TextView score_TXT;
     LinearLayout grid;
-
 
     int score = 0;
     Random rnd = new Random();
@@ -43,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     int huntedMovement = 3; //default is down so it wont move
 
     /**
-     * function to programmatically create an ImageView grid for the game
-     * current grid is sized 3x5
+     * Programmatically create an ImageView grid for the game with width X height dimensions
+     *
      */
     void initGrid()
     {
@@ -52,14 +47,13 @@ public class MainActivity extends AppCompatActivity {
         {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
-            row.setWeightSum(width);
             for (int j = 0; j < width; j++)
             {
-                ImageView IMG = new ImageView(this);
-                IMG.setLayoutParams(new LayoutParams(grid.getWidth() / width, grid.getHeight() / height));
-                IMG.setBackgroundResource(R.drawable.border);
-                row.addView(IMG);
-                gameBoard[i][j] = IMG;
+                ImageView cell = new ImageView(this);
+                cell.setLayoutParams(new LayoutParams(grid.getWidth() / width, grid.getHeight() / height)); //set cell size
+                cell.setBackgroundResource(R.drawable.border);
+                row.addView(cell);
+                gameBoard[i][j] = cell;
             }
             grid.addView(row);
         }
@@ -73,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     {
         //zero game's score
         score = 0;
-        txt.setText(score + "");
+        score_TXT.setText(String.valueOf(score));
 
         gameBoard[hunterPos[1]][hunterPos[0]].setImageResource(0);
         gameBoard[huntedPos[1]][huntedPos[0]].setImageResource(0);
@@ -94,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
      */
     void findViews()
     {
-        txt = findViewById(R.id.Main_TXT_Score);
+        score_TXT = findViewById(R.id.Main_TXT_Score);
         grid = findViewById(R.id.Main_Layout_Grid);
 
         lives = new ImageView[] {findViewById(R.id.Main_IMG_Heart1),
@@ -121,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         upBTN.setOnClickListener((v) -> huntedMovement = 1);
         leftBTN.setOnClickListener((v) -> huntedMovement = 2);
         downBTN.setOnClickListener((v) -> huntedMovement = 3);
-
     }
 
     /**
@@ -205,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             initPlayers();
             return;
         }
-        txt.setText(score + "");
+        score_TXT.setText(String.valueOf(score));
         int[] move = numberToDirection(huntedMovement);
         moveItem(huntedPos, move[1], move[0],R.drawable.man); // if hunted steps on hunter.
         if(checkGameOver())
@@ -237,8 +230,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             },1000);
         });
-
-
-
     }
 }
