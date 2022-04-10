@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HuntingGame</string>
+    <string name="right">Right</string>
+    <string name="left">Left</string>
+    <string name="up">UP</string>
+    <string name="down">Down</string>
+    <string name="_0">0</string>
+</resources>
